@@ -11,7 +11,7 @@ function [x, L, U, P] = luPivot(A, b)
   P = eye(n);
 
   for k=1:(n-1)
-    [x, ind] = max(A(k:n,k));
+    [x, ind] = max(abs(A(k:n,k)));
     ind = ind + k - 1;
     A = swapRows(A, k, ind);
     P = swapRows(P, k, ind);
