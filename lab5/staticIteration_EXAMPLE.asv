@@ -9,23 +9,19 @@
 % flag      if 0: attained desired tolerance
 %           if 1: reached maxIt nr of iterations
 % convHist  convergence history
-function [root, flag, convHist_res, convHist_x] = staticIteration(f, c, x0, tol, maxIt)
-    it = 1;
+function [root, flag, convHist] = staticIteration(f, c, x0, tol, maxIt)
+    it = 0;
+    convHist = [x0];
     flag = 0;
-    err = f(x0);
-    err_x = f(x0);
-    convHist_res = [err_x];
-    convHist_x = [err_x];
+    err = x0;
     while err > tol 
         if it == maxIt
             flag = 1;
             break;
         end
         x_new = x0 + c * f(x0);
-        err = abs(f(x_new));        %take residual error 
-        err_x = abs(x0-x_new);
-        convHist_res = [convHist_res err];
-        convHist_x = [convHist_x err_x];
+        err = abs(x_new);
+        convHist = [convHist err];
         x0 = x_new;
         it = it + 1;
     end
