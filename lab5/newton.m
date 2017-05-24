@@ -11,3 +11,27 @@
 % iter      the number of iterations
 % convHist  convergence history
 function [root, flag, iter, convHist] = newton(f, df, x0, tol, maxIt)
+  iter = 0;
+  flag = 0;
+
+  x = x0;
+  err = 0;
+  convHist = [];
+
+  while ((err >= tol) || (iter == 0))
+    if(iter > maxIt)
+      flag = 1;
+      break;
+    end
+    
+    delta = -df(x) \ f(x);
+    err = norm(delta);
+
+    convHist = [convHist err];
+
+    x = x + delta;
+    iter = iter + 1;
+  end
+
+  root = x;
+end
