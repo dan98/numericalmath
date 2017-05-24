@@ -21,6 +21,7 @@ function [x, flag, convHist] = iterMethod(A, b, x0, tol, maxIt, P, dynamic, alph
   x = x0;
   nb = norm(b);
   nr0 = norm(r);
+  disp(nr0);
   nr = nr0;
   convHist = [];
 
