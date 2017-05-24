@@ -6,3 +6,7 @@
 % vecF      vector (n^2 x 1) representing the matrix 
 %           F = X^2 - B
 function vecF = matFunc(vecX, B)
+  n = sqrt(length(vecX));
+  X = reshape(vecX, n, n);
+  vecF = reshape(X^2 - B, n*n, 1);
+end
