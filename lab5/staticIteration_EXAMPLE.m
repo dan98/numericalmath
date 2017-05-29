@@ -12,20 +12,19 @@
 function [root, flag, convHist_res, convHist_x] = staticIteration(f, c, x0, tol, maxIt)
     it = 1;
     flag = 0;
-    err = f(x0);
-    err_x = f(x0);
-    convHist_res = [err_x];
-    convHist_x = [err_x];
+    err = tol+1;
+    convHist_res = zeros(1,maxIt);
+    convHist_x = zeros(1,maxIt);
     while err > tol 
-        if it == maxIt
+        if it > maxIt
             flag = 1;
             break;
         end
         x_new = x0 + c * f(x0);
         err = abs(f(x_new));        %take residual error 
         err_x = abs(x0-x_new);
-        convHist_res = [convHist_res err];
-        convHist_x = [convHist_x err_x];
+        convHist_res(it) =  err;
+        convHist_x(it) = err_x;
         x0 = x_new;
         it = it + 1;
     end

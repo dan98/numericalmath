@@ -1,4 +1,5 @@
- f = @(x) log(x*exp(x));
+format long
+f = @(x) log(x*exp(x));
  c = -3/4;
  x_0 = 3;
  tol = 1e-12;
