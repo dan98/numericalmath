@@ -10,11 +10,12 @@
 % flag      flag = 0: tolerance attained, flag = 1: reached maxIt
 % iter      the number of iterations
 % convHist  convergence history
-function [root, flag, iter, convHist] = newton(f, df, x0, tol, maxIt)
+function [root, flag, iter, convHist] = newtonIter(f, x0, tol, maxIt)
   iter = 0;
   flag = 0;
 
   x = x0;
+  n = size(x0, 1);
   err = 0;
   convHist = [];
 
@@ -24,12 +25,15 @@ function [root, flag, iter, convHist] = newton(f, df, x0, tol, maxIt)
       break;
     end
     
-    delta = -inv(df(x))*f(x);
+    dfIter = @(dir) dirVec(f, x, dir, 10^(-1), 1);
+
+    [delta, fl, ch] = iterMethod(dfIter, f(x), rand(n, 1), 10^(-8), n, 2, 1);
+
     err = norm(delta);
 
     convHist = [convHist err];
 
-    x = x + delta;
+    x = x - delta;
     iter = iter + 1;
   end
 

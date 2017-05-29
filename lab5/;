@@ -1,7 +1,11 @@
-format long;
+B = [
+  2 1 0 0;
+  0 2 1 0;
+  0 0 2 1;
+  0 0 0 2
+];
 
-n = 50;
-B = buildB(2, n);
+n = 4;
 
 vecB = reshape(B, n*n, 1);
 
@@ -35,39 +39,25 @@ dfFuncHopt = @(x) matJac(x, 'approx', hopt, B);
 fFunc = @(x) matFunc(x, B);
 x0 = reshape(eye(n), n*n, 1);
 
-tic
 [rsEx, flagEx, iterEx, convHistEx] = newton (fFunc, dfFuncEx, x0, 10^(-10), 25);
-toc
 
-tic
 [rsH, flagH, iterH, convHistH] = newton (fFunc, dfFuncH, x0, 10^(-10), 25);
-toc
 
-tic
 [rsHopt, flagHopt, iterHopt, convHistHopt] = newton (fFunc, dfFuncHopt, x0, 10^(-10), 25);
-toc
 
-tic
-[rsIter, flagIter, iterIter, convHistIter] = newtonIter (fFunc, x0, 10^(-10), 25);
-toc
+disp(rsEx);
+disp(rsH);
+disp(rsHopt);
 
-disp('Exact');
-disp(convHistEx);
-disp('h = 10^(-8)');
-disp(convHistHopt);
-disp('h = 1/10');
-disp(convHistH);
-disp('iter meth');
-disp(convHistIter);
+sq = reshape(rsEx, n, n);
+disp(sq*sq);
 
 figure;
-loglog((1:1:length(convHistEx)), convHistEx, 'DisplayName', 'Exact Jacobian');
+plot((1:1:length(convHistEx)), convHistEx, 'DisplayName', 'Exact Jacobian');
 hold on;
 
-loglog((1:1:length(convHistH)), convHistH, 'DisplayName', 'H = 0.1 Jacobian');
+plot((1:1:length(convHistH)), convHistH, 'DisplayName', 'H = 0.1 Jacobian');
 
-loglog((1:1:length(convHistHopt)), convHistHopt, 'DisplayName', 'Hopt Jacobian');
-
-loglog((1:1:length(convHistIter)), convHistIter, 'DisplayName', 'Iter Jacobian');
+plot((1:1:length(convHistHopt)), convHistHopt, 'DisplayName', 'Hopt Jacobian');
 
 legend('show');
