@@ -61,13 +61,13 @@ disp('iter meth');
 disp(convHistIter);
 
 figure;
-loglog((1:1:length(convHistEx)), convHistEx, 'DisplayName', 'Exact Jacobian');
+semilogy((1:1:length(convHistEx)), convHistEx, 'DisplayName', 'Exact Jacobian');
 hold on;
 
-loglog((1:1:length(convHistH)), convHistH, 'DisplayName', 'H = 0.1 Jacobian');
+semilogy((1:1:length(convHistH)), convHistH, 'DisplayName', 'H = 0.1 Jacobian');
 
-loglog((1:1:length(convHistHopt)), convHistHopt, 'DisplayName', 'Hopt Jacobian');
+semilogy((1:1:length(convHistHopt)), convHistHopt, 'DisplayName', 'Hopt Jacobian');
 
-loglog((1:1:length(convHistIter)), convHistIter, 'DisplayName', 'Iter Jacobian');
+semilogy((1:1:length(convHistIter)), convHistIter, 'DisplayName', 'Iter Jacobian');
 
 legend('show');

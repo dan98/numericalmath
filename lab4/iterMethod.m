@@ -17,7 +17,11 @@
 % flag      if 0 then tolerance is attained
 % convHist  relative residual per iteration
 function [x, flag, convHist] = iterMethod(A, b, x0, tol, maxIt, P, dynamic, alpha0)
-  r = b - A*x0;
+  if(isa(A) == 'function_handle')
+    r = b - A(x0);
+  else
+    r = b - A*x0;
+  end
   x = x0;
   nb = norm(b);
   nr0 = norm(r);
@@ -40,7 +44,12 @@ function [x, flag, convHist] = iterMethod(A, b, x0, tol, maxIt, P, dynamic, alph
       z = P\r;
     end
 
-    az = A*z;
+    if(isa(A) == 'function_handle')
+      az = A(z);
+    else
+      az = A*z;
+    end
+
     if dynamic == 0
       alpha = alpha0;
     end
