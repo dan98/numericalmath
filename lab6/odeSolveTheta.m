@@ -14,13 +14,13 @@
 % solArray  array containing the solution at each time level
 %           (the ith row equals the solution at time tArray(i))
 function [x, u] = odeSolveTheta(f, tRange, u0, df, theta, h)
-  x = (tRange(1):h:tRange(2));
+  nSteps = ceil((tRange(2) - tRange(1)) / h);
+  x = linspace(tRange(1), tRange(2), nSteps + 1).';
   sz = length(u0);
-  u = zeros(sz, length(x));
+  u = zeros(sz, nSteps + 1);
   u(:, 1) = u0;
-  n = length(x);
 
-  for i=2:n
+  for i=2:(nSteps+1)
     if theta == 0
       % Explicit
       u(:, i) = u(:, i-1) + h*f(x(i-1), u(:, i-1));
@@ -28,8 +28,9 @@ function [x, u] = odeSolveTheta(f, tRange, u0, df, theta, h)
       % Implicit
       newtonf = @(xx) (u(:, i-1) + h*(theta*f(x(i), xx) + (1-theta)*f(x(i-1), u(:, i-1))) - xx);
       newtondf = @(xx) (h*theta*df(x(i), xx) - eye(sz));
-      u(:, i) = newton(newtonf, newtondf, u(:, i-1), 10^(-6), 1000);
+      u(:, i) = newton(newtonf, newtondf, u(:, i-1), 10^(-4), 6);
     end
   end
 
+  u = u.';
 end
